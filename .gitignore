@@ -1,0 +1,7 @@
+.idea/
+wav48/
+__pycache__/
+/ckpt
+notes/
+*.h5
+model_weight/
