@@ -197,7 +197,9 @@ class Solver(object):
                 loss_clf = self.cal_loss(logits, c)
                 # update 
                 reset_grad([self.SpeakerClassifier])
+                self.Encoder.requires_grad_(requires_grad=False)
                 loss_clf.backward()
+                self.Encoder.requires_grad_(requires_grad=True)
                 grad_clip([self.SpeakerClassifier], self.hps.max_grad_norm)
                 self.clf_opt.step()
                 # calculate acc
@@ -230,7 +232,9 @@ class Solver(object):
                     loss_clf = self.cal_loss(real_logits, c)
                     loss = -hps.beta_dis * w_dis + hps.beta_clf * loss_clf + hps.lambda_ * gp
                     reset_grad([self.PatchDiscriminator])
+                    self.Encoder.requires_grad_(requires_grad=False)
                     loss.backward()
+                    self.Encoder.requires_grad_(requires_grad=True)
                     grad_clip([self.PatchDiscriminator], self.hps.max_grad_norm)
                     self.patch_opt.step()
                     # calculate acc
@@ -299,7 +303,9 @@ class Solver(object):
                     loss = hps.alpha_dis * loss_clf
                     # update 
                     reset_grad([self.SpeakerClassifier])
+                    self.Encoder.requires_grad_(requires_grad=False)
                     loss.backward()
+                    self.Encoder.requires_grad_(requires_grad=True)
                     grad_clip([self.SpeakerClassifier], self.hps.max_grad_norm)
                     self.clf_opt.step()     # clf equals to classifier
                     # calculate acc
